@@ -1,0 +1,82 @@
+# kubectl create secret docker-registry ghcr-auth-token --docker-server=ghcr.io --docker-username=bognarpal --docker-password=<TOKEN>
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: allatok-beadando-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: allatok-beadando
+  template:
+    metadata:
+      labels:
+        app: allatok-beadando
+    spec:
+      containers:
+        - name: allatok-beadando-container
+          # image: ghcr.io/luohongjun/ghaction-k8s-13a-acsop:1773397606
+          ports:
+            - containerPort: 80
+      imagePullSecrets:
+        - name: ghcr-auth-token
+
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: allatok-beadando-cluster-ip-service
+spec:
+  selector:
+    app: allatok-beadando
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+
+---
+
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: allatok-beadando-certificate
+spec:
+  secretName: allatok-beadando-certificate
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  dnsNames:
+    - github-action-0310-bognarpal.jcloud.jedlik.cloud
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: allatok-beadando-ingress
+  annotations:
+    # nginx.ingress.kubernetes.io/whitelist-source-range: 10.0.0.0/16, 193.225.219.0/24
+    nginx.ingress.kubernetes.io/ssl-redirect: 'true' 
+
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - github-action-0310-bognarpal.jcloud.jedlik.cloud
+      secretName: allatok-beadando-certificate
+
+  rules:
+    - host: github-action-0310-bognarpal.jcloud.jedlik.cloud
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: allatok-beadando-cluster-ip-service
+                port:
+                  number: 80
