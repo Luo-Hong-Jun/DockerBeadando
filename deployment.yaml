@@ -50,7 +50,7 @@ spec:
     name: letsencrypt-prod
     kind: ClusterIssuer
   dnsNames:
-    - github-action-0310-bognarpal.jcloud.jedlik.cloud
+    - allatok-beadando-luohongjun.jcloud.jedlik.cloud
 
 ---
 
@@ -66,11 +66,11 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - github-action-0310-bognarpal.jcloud.jedlik.cloud
+        - allatok-beadando-luohongjun.jcloud.jedlik.cloud
       secretName: allatok-beadando-certificate
 
   rules:
-    - host: github-action-0310-bognarpal.jcloud.jedlik.cloud
+    - host: allatok-beadando-luohongjun.jcloud.jedlik.cloud
       http:
         paths:
           - path: /
