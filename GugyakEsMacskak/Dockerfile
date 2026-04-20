@@ -1,9 +1,9 @@
 FROM node:24 AS build
 
 WORKDIR /home/node/app
-COPY ./app .
+COPY ../GugyakEsMacskak .
 RUN npm i
 RUN npm run build
 
 FROM nginx AS final
-COPY --from=build /home/node/app/dist/20250930_McDonalds/browser /usr/share/nginx/html
+COPY --from=build /home/node/app/dist/GugyakEsMacskak/browser /usr/share/nginx/html
