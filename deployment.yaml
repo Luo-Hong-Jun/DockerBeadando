@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: allatok-frontend-container
-          image: ghcr.io/luohongjun/allatok-beadando
+          image: ghcr.io/luohongjun/allatok-beadando:1773398732
           ports:
             - containerPort: 80
       imagePullSecrets:
