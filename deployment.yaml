@@ -4,20 +4,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: allatok-beadando-deployment
+  name: allatok-frontend-deployment
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: allatok-beadando
+      app: allatok-frontend
   template:
     metadata:
       labels:
-        app: allatok-beadando
+        app: allatok-frontend
     spec:
       containers:
-        - name: allatok-beadando-container
-          # image: ghcr.io/luohongjun/ghaction-k8s-13a-acsop:1773397606
+        - name: allatok-frontend-container
+          image: ghcr.io/luohongjun/allatok-beadando
           ports:
             - containerPort: 80
       imagePullSecrets:
@@ -26,13 +26,51 @@ spec:
 
 ---
 
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: allatok-backend-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: allatok-backend
+  template:
+    metadata:
+      labels:
+        app: allatok-backend
+    spec:
+      containers:
+        - name: allatok-backend-container
+          # image: ghcr.io/luohongjun/ghaction-k8s-13a-acsop:1773397606
+          ports:
+            - containerPort: 3000
+      imagePullSecrets:
+        - name: ghcr-auth-token
+
+---
+
 apiVersion: v1
 kind: Service
 metadata:
-  name: allatok-beadando-cluster-ip-service
+  name: allatok-backend-cluster-ip-service
 spec:
   selector:
-    app: allatok-beadando
+    app: allatok-backend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: allatok-frontend-cluster-ip-service
+spec:
+  selector:
+    app: allatok-frontend
   ports:
     - protocol: TCP
       port: 80
@@ -43,21 +81,21 @@ spec:
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: allatok-beadando-certificate
+  name: allatok-certificate
 spec:
-  secretName: allatok-beadando-certificate
+  secretName: allatok-certificate
   issuerRef:
     name: letsencrypt-prod
     kind: ClusterIssuer
   dnsNames:
-    - allatok-beadando-luohongjun.jcloud.jedlik.cloud
-
+    - allatok-frontend-luohongjun.jcloud.jedlik.cloud
+    - allatok-backend-luohongjun.jcloud.jedlik.cloud
 ---
 
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: allatok-beadando-ingress
+  name: allatok-frontend-ingress
   annotations:
     # nginx.ingress.kubernetes.io/whitelist-source-range: 10.0.0.0/16, 193.225.219.0/24
     nginx.ingress.kubernetes.io/ssl-redirect: 'true' 
@@ -66,17 +104,28 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - allatok-beadando-luohongjun.jcloud.jedlik.cloud
-      secretName: allatok-beadando-certificate
+        - allatok-frontend-luohongjun.jcloud.jedlik.cloud
+        - allatok-backend-luohongjun.jcloud.jedlik.cloud
+      secretName: allatok-certificate
 
   rules:
-    - host: allatok-beadando-luohongjun.jcloud.jedlik.cloud
+    - host: allatok-frontend-luohongjun.jcloud.jedlik.cloud
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: allatok-beadando-cluster-ip-service
+                name: allatok-frontend-cluster-ip-service
                 port:
                   number: 80
+    - host: allatok-backend-luohongjun.jcloud.jedlik.cloud
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: allatok-backend-cluster-ip-service
+                port:
+                  number: 3000               
