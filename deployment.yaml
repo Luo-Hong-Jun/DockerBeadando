@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: allatok-frontend-container
-          image: ghcr.io/luohongjun/allatok-beadando:1773398732
+          image: ghcr.io/luo-hong-jun/allatok-beadando:1773398732
           ports:
             - containerPort: 80
       imagePullSecrets:
@@ -42,7 +42,7 @@ spec:
     spec:
       containers:
         - name: allatok-backend-container
-          # image: ghcr.io/luohongjun/ghaction-k8s-13a-acsop:1773397606
+          # image: ghcr.io/luo-hong-jun/ghaction-k8s-13a-acsop:1773397606
           ports:
             - containerPort: 3000
       imagePullSecrets:
@@ -88,8 +88,8 @@ spec:
     name: letsencrypt-prod
     kind: ClusterIssuer
   dnsNames:
-    - allatok-frontend-luohongjun.jcloud.jedlik.cloud
-    - allatok-backend-luohongjun.jcloud.jedlik.cloud
+    - allatok-frontend-luo-hong-jun.jcloud.jedlik.cloud
+    - allatok-backend-luo-hong-jun.jcloud.jedlik.cloud
 ---
 
 apiVersion: networking.k8s.io/v1
@@ -104,12 +104,12 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - allatok-frontend-luohongjun.jcloud.jedlik.cloud
-        - allatok-backend-luohongjun.jcloud.jedlik.cloud
+        - allatok-frontend-luo-hong-jun.jcloud.jedlik.cloud
+        - allatok-backend-luo-hong-jun.jcloud.jedlik.cloud
       secretName: allatok-certificate
 
   rules:
-    - host: allatok-frontend-luohongjun.jcloud.jedlik.cloud
+    - host: allatok-frontend-luo-hong-jun.jcloud.jedlik.cloud
       http:
         paths:
           - path: /
@@ -119,7 +119,7 @@ spec:
                 name: allatok-frontend-cluster-ip-service
                 port:
                   number: 80
-    - host: allatok-backend-luohongjun.jcloud.jedlik.cloud
+    - host: allatok-backend-luo-hong-jun.jcloud.jedlik.cloud
       http:
         paths:
           - path: /
