@@ -6,14 +6,14 @@ import { AnimalModel } from '../animal.model';
   providedIn: 'root',
 })
 export class Dataservice {
-    constructor(private http:HttpClient) 
+    constructor(private http:HttpClient)
     { }
 
     getGugya(){
-        return this.http.get<AnimalModel>('http://localhost:3000/api/GetGugya');
+        return this.http.get<AnimalModel>('http://allatok-backend-luo-hong-jun.jcloud.jedlik.cloud/api/GetGugya');
     }
 
     getMacska(){
-        return this.http.get<AnimalModel>('http://localhost:3000/api/GetMacska');
+        return this.http.get<AnimalModel>('http://allatok-backend-luo-hong-jun.jcloud.jedlik.cloud/api/GetMacska');
     }
 }
