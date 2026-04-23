@@ -10,10 +10,10 @@ export class Dataservice {
     { }
 
     getGugya(){
-        return this.http.get<AnimalModel>('http://allatok-backend-luo-hong-jun.jcloud.jedlik.cloud/api/GetGugya');
+        return this.http.get<AnimalModel>('https://allatok-backend-luo-hong-jun.jcloud.jedlik.cloud/api/GetGugya');
     }
 
     getMacska(){
-        return this.http.get<AnimalModel>('http://allatok-backend-luo-hong-jun.jcloud.jedlik.cloud/api/GetMacska');
+        return this.http.get<AnimalModel>('https://allatok-backend-luo-hong-jun.jcloud.jedlik.cloud/api/GetMacska');
     }
 }
