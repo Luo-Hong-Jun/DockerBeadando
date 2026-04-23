@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: allatok-frontend-container
-          image: ghcr.io/luo-hong-jun/allatok-frontend:1773398732
+          image: ghcr.io/luo-hong-jun/allatok-frontend:1776935593
           ports:
             - containerPort: 80
       imagePullSecrets:
@@ -42,7 +42,7 @@ spec:
     spec:
       containers:
         - name: allatok-backend-container
-          image: ghcr.io/luo-hong-jun/allatok-backend:1773398732
+          image: ghcr.io/luo-hong-jun/allatok-backend:1776935593
           ports:
             - containerPort: 3000
       imagePullSecrets:
