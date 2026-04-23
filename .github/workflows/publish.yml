@@ -26,14 +26,13 @@ jobs:
     - name: Build the Docker image
       run: |
         docker login ghcr.io -u luo-hong-jun -p ${{ secrets.GHCR_TOKEN }}
-        docker build ./GugyakEsMacskak --file ./GugyakEsMacskak/Dockerfile --tag ghcr.io/luo-hong-jun/gugyak-frontend:$IMAGE_TAG
-        docker push ghcr.io/luo-hong-jun/gugyak-frontend:$IMAGE_TAG
-        docker build ./gugyamacskabackend --file ./gugyamacskabackend/Dockerfile --tag ghcr.io/luo-hong-jun/gugyak-backend:$IMAGE_TAG
-        docker push ghcr.io/luo-hong-jun/gugyak-backend:$IMAGE_TAG
-        docker push ghcr.io/luo-hong-jun/allatok-beadando:$IMAGE_TAG
+        docker build ./GugyakEsMacskak --file ./GugyakEsMacskak/Dockerfile --tag ghcr.io/luo-hong-jun/allatok-frontend:$IMAGE_TAG
+        docker push ghcr.io/luo-hong-jun/allatok-frontend:$IMAGE_TAG
+        docker build ./gugyamacskabackend --file ./gugyamacskabackend/Dockerfile --tag ghcr.io/luo-hong-jun/allatok-backend:$IMAGE_TAG
+        docker push ghcr.io/luo-hong-jun/allatok-backend:$IMAGE_TAG
 
-        sed -i 's|image: ghcr.io/luo-hong-jun/gugyak-frontend:.*|image: ghcr.io/luo-hong-jun/gugyak-frontend:'"$IMAGE_TAG"'|' deployment.yaml
-        sed -i 's|image: ghcr.io/luo-hong-jun/gugyak-backend:.*|image: ghcr.io/luo-hong-jun/gugyak-backend:'"$IMAGE_TAG"'|' deployment.yaml
+        sed -i 's|image: ghcr.io/luo-hong-jun/allatok-frontend:.*|image: ghcr.io/luo-hong-jun/allatok-frontend:'"$IMAGE_TAG"'|' deployment.yaml
+        sed -i 's|image: ghcr.io/luo-hong-jun/allatok-backend:.*|image: ghcr.io/luo-hong-jun/allatok-backend:'"$IMAGE_TAG"'|' deployment.yaml
         git config --global user.name "Luo-Hong-Jun"
         git config --global user.email "luo.hong.jun@students.jedlik.eu"
 
