@@ -21,7 +21,7 @@ spec:
           ports:
             - containerPort: 80
       imagePullSecrets:
-        - name: ghcr-auth-token
+        - name: ghcr-beadando-auth-token
 
 
 ---
@@ -46,7 +46,7 @@ spec:
           ports:
             - containerPort: 3000
       imagePullSecrets:
-        - name: ghcr-auth-token
+        - name: ghcr-beadando-auth-token
 
 ---
 
