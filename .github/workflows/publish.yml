@@ -25,11 +25,11 @@ jobs:
     - uses: actions/checkout@v4
     - name: Build the Docker image
       run: |
+        docker login ghcr.io -u luohongjun -p ${{ secrets.GHCR_TOKEN }}
         docker build ./GugyakEsMacskak --file ./GugyakEsMacskak/Dockerfile --tag ghcr.io/luohongjun/gugyak-frontend:$IMAGE_TAG
         docker push ghcr.io/luohongjun/gugyak-frontend:$IMAGE_TAG
         docker build ./gugyamacskabackend --file ./gugyamacskabackend/Dockerfile --tag ghcr.io/luohongjun/gugyak-backend:$IMAGE_TAG
         docker push ghcr.io/luohongjun/gugyak-backend:$IMAGE_TAG
-        docker login ghcr.io -u luohongjun -p ${{ secrets.GHCR_TOKEN }}
         docker push ghcr.io/luohongjun/allatok-beadando:$IMAGE_TAG
 
         sed -i 's|image: ghcr.io/luohongjun/gugyak-frontend:.*|image: ghcr.io/luohongjun/gugyak-frontend:'"$IMAGE_TAG"'|' deployment.yaml
